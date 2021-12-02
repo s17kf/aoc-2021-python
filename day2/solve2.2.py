@@ -5,7 +5,7 @@ import common
 isEmpty = common.isEmpty
 
 HELP_INFO = [
-"Script is solving task 1 for day 1 of advent of code 2021",
+"Script is solving task 2 for day 2 of advent of code 2021",
 "Arguments:",
 common.TAB + "input file"
 ]
