@@ -5,6 +5,9 @@ TAB = "    "
 def isEmpty(array):
     return len(array) == 0
 
+def getLastElement(array):
+    return array[len(array) - 1]
+
 def readLinesFromFile(filename):
     with open(filename, 'r') as file:
         lines = file.readlines()
