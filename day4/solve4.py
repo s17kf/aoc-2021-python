@@ -33,7 +33,7 @@ boards = common.getListOfGroupsDividedEmptyLine(inputLines[2:])
 def verifyItemsAtRow(board, row, numbers):
     for i in range(5):
         if not getBoardItem(board, row, i) in numbers:
-            print(f"{getBoardItem(board, row, i)} not in {numbers}")
+            # print(f"{getBoardItem(board, row, i)} not in {numbers}")
             return False
     return True
 
@@ -45,9 +45,9 @@ def verifyItemsAtColumn(board, column, numbers):
 
 
 def verifyBoard(board, numbers):
-    if len(numbers) == 7:
-        print(numbers)
-        print(board)
+    # if len(numbers) == 7:
+        # print(numbers)
+        # print(board)
     for i in range(5):
         if verifyItemsAtRow(board, i, numbers) or verifyItemsAtColumn(board, i, numbers):
             return True
@@ -55,8 +55,9 @@ def verifyBoard(board, numbers):
 
 def getSumNumbersOnBoard(board, numbers):
     sum = 0
-    for num in numbers:
-        if num in boards:
+    for num in board:
+        if not num in numbers:
+            # print(f"{num} not in {board}")
             sum += num
     return sum
 
@@ -64,19 +65,34 @@ def getSumNumbersOnBoard(board, numbers):
 def doTask1(allNumbers, boards):
     lastIndex = 0
     currentNumbers = allNumbers[0:4]
-    for i in range(5, len(allNumbers)):
-        currentIndex = lastIndex + i
-        newNumbers = allNumbers[:currentIndex]
-        currentNumbers = newNumbers
-        # print(currentNumbers)
-        # for num in newNumbers:
-        #     currentNumbers.append(num)
+    for i in range(4, len(allNumbers)):
+        num = allNumbers[i]
+        currentNumbers.append(num)
         # print(currentNumbers)
         for board in boards:
             if verifyBoard(board, currentNumbers):
-                sumOfNums = getSumNumbersOnBoard(board, allNumbers)
+                # print(currentNumbers)
+                sumOfNums = getSumNumbersOnBoard(board, currentNumbers)
                 return sumOfNums, num
-        lastIndex = currentIndex
+
+def doTask2(allNumbers, boards):
+    lastIndex = 0
+    lastWinner = None
+    currentNumbers = allNumbers[0:4]
+    for i in range(4, len(allNumbers)):
+        num = allNumbers[i]
+        currentNumbers.append(num)
+        # print(currentNumbers)
+        for board in boards:
+            if verifyBoard(board, currentNumbers):
+                # print(currentNumbers)
+                lastWinner = board
+                boards.remove(board)
+                if isEmpty(boards):
+                    sumOfNums = getSumNumbersOnBoard(board, currentNumbers)
+                    return sumOfNums, num
+
+
 
 allNumbers = inputLines[0]
 allNumbers = allNumbers.split(",")
@@ -87,9 +103,10 @@ for board in boards:
     board = [int(n) for n in board]
     intBoards.append(board)
 
-
-
-print(doTask1(allNumbers, intBoards))
+sumOfNums, num = doTask1(allNumbers, intBoards)
+result1 = sumOfNums * num
+sumOfNums2, num2 = doTask2(allNumbers, intBoards)
+result2 = sumOfNums2 * num2
 
 # print(allNumbers)
 # for board in intBoards:
@@ -101,8 +118,8 @@ print(doTask1(allNumbers, intBoards))
 
 
 
-print(f"task1: {0}")
-print(f"task2: {1}")
+print(f"task1: {sumOfNums} * {num} = {result1}")
+print(f"task2: {sumOfNums2} * {num2} = {result2}")
 
 
 

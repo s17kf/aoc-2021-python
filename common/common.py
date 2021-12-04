@@ -27,3 +27,24 @@ def printArrayLineByLine(array):
     for line in array:
         print(line)
 
+def getListOfGroupsDividedEmptyLine(lines, delimiter = " "):
+    groups = []
+    lastGroup = ""
+
+    for line in lines:
+        if isEmpty(line):
+            groups.append(lastGroup.lstrip())
+            lastGroup = ""
+            continue
+        lastGroup += delimiter + line
+    if lastGroup != "":
+        groups.append(lastGroup.lstrip())
+    return groups
+
+def addOrIncreaseForKey(myDict, key, defaultValue = 1, valueToIncrease = 1):
+    if key in myDict:
+        myDict[key] += 1
+    else:
+        myDict[key] = defaultValue
+    return myDict
+
