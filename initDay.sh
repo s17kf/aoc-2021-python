@@ -6,9 +6,12 @@ if [[ $# -ne 1 ]]; then
 fi
 
 day=$1
+solutionFile="solve${day}.py"
 
-ln -s ../common/common.py
+ln -s ../common .
 
-cp ../solveTemplate.py solve${day}.py
+cp ../solveTemplate.py "${solutionFile}"
+
+sed -i "s/DAY_NUM/${day}/g" "${solutionFile}"
 
 echo "Day ${day} initialized."

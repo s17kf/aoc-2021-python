@@ -2,26 +2,20 @@
 
 import common
 
-isEmpty = common.isEmpty
-
 HELP_INFO = [
-"Script is solving task 1 for day 3 of advent of code 2021",
-"Arguments:",
-common.TAB + "input file"
+    "Script is solving task DAY_NUM of advent of code 2021",
+    "Arguments:",
+    common.TAB + "input file"
 ]
+arguments_keywords = ["inputFile"]
 
-argumentsKeywords = ["inputFile"]
-
-scriptArguments = common.readScriptArguments(argumentsKeywords)
-
-if (isEmpty(scriptArguments)):
-    common.printArrayLineByLine(HELP_INFO)
+script_arguments = common.parse_arguments(arguments_keywords, HELP_INFO)
+if script_arguments is None:
     exit(1)
 
-inputFileName = scriptArguments["inputFile"]
-
+inputFileName = script_arguments["inputFile"]
 print("solving file: " + inputFileName)
-inputLines = common.readLinesFromFile(inputFileName)
+inputLines = common.read_lines_from_file(inputFileName)
 
 
 
@@ -30,10 +24,8 @@ inputLines = common.readLinesFromFile(inputFileName)
 
 
 
+result1 = 0
+result2 = 1
 
-
-print(f"task1: {0}")
-print(f"task2: {1}")
-
-
-
+print(f"task1: {result1}")
+print(f"task2: {result2}")
