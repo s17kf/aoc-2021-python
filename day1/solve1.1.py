@@ -2,33 +2,27 @@
 
 import common
 
-isEmpty = common.isEmpty
-
 HELP_INFO = [
-"Script is solving task 1 for day 1 of advent of code 2021",
-"Arguments:",
-common.TAB + "input file"
+    "Script is solving task 1 for day 1 of advent of code 2021",
+    "Arguments:",
+    common.TAB + "input file"
 ]
+arguments_keywords = ["inputFile"]
 
-argumentsKeywords = ["inputFile"]
-
-scriptArguments = common.readScriptArguments(argumentsKeywords)
-
-if (isEmpty(scriptArguments)):
-    common.printArrayLineByLine(HELP_INFO)
+script_arguments = common.parse_arguments(arguments_keywords, HELP_INFO)
+if script_arguments is None:
     exit(1)
 
-inputFileName = scriptArguments["inputFile"]
-
+inputFileName = script_arguments["inputFile"]
 print("solving file: " + inputFileName)
-inputLines = common.readLinesFromFile(inputFileName)
+inputLines = common.read_lines_from_file(inputFileName)
 
 computedEntries = 0
 increasing = 0
 for i in range(1, len(inputLines)):
     currentLine = inputLines[i]
     previousLine = inputLines[i-1]
-    if (int(currentLine) > int(previousLine)):
+    if int(currentLine) > int(previousLine):
         increasing += 1
     computedEntries += 1
 

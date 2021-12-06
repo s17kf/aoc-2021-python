@@ -2,26 +2,30 @@
 
 import common
 
-isEmpty = common.isEmpty
-
 HELP_INFO = [
-"Script is solving task 2 for day 3 of advent of code 2021",
-"Arguments:",
-common.TAB + "input file"
+    "Script is solving task 2 for day 3 of advent of code 2021",
+    "Arguments:",
+    common.TAB + "input file"
 ]
+arguments_keywords = ["inputFile"]
 
-argumentsKeywords = ["inputFile"]
+script_arguments = common.parse_arguments(arguments_keywords, HELP_INFO)
+if script_arguments is None:
+    exit(1)
 
-scriptArguments = common.readScriptArguments(argumentsKeywords)
+inputFileName = script_arguments["inputFile"]
+print("solving file: " + inputFileName)
+inputLines = common.read_lines_from_file(inputFileName)
 
-def getOneItem(lines, bitForGt, bitForOther):
+
+def get_one_item(lines, bit_for_gt, bit_for_other):
     i = 0
-    linesLeft = lines
-    while not isEmpty(linesLeft):
+    lines_left = lines
+    while not common.is_empty(lines_left):
         zeros = 0
         ones = 0
-        lines = linesLeft
-        linesLeft = []
+        lines = lines_left
+        lines_left = []
         for line in lines:
             bit = line[i]
             if bit == "0":
@@ -30,29 +34,24 @@ def getOneItem(lines, bitForGt, bitForOther):
                 ones += 1
 
         if zeros > ones:
-            chosenBit = bitForGt
+            chosen_bit = bit_for_gt
         else:
-            chosenBit = bitForOther
+            chosen_bit = bit_for_other
 
         for line in lines:
             bit = line[i]
-            if bit == chosenBit:
-                linesLeft.append(line)
-        if len(linesLeft) == 1:
-            return linesLeft[0]
+            if bit == chosen_bit:
+                lines_left.append(line)
+        if len(lines_left) == 1:
+            return lines_left[0]
         i += 1
 
-if (isEmpty(scriptArguments)):
-    common.printArrayLineByLine(HELP_INFO)
-    exit(1)
-
-inputFileName = scriptArguments["inputFile"]
 
 print("solving file: " + inputFileName)
-inputLines = common.readLinesFromFile(inputFileName)
+inputLines = common.read_lines_from_file(inputFileName)
 
-oxygenLeft = getOneItem(inputLines, "0", "1")
-co2Left = getOneItem(inputLines, "1", "0")
+oxygenLeft = get_one_item(inputLines, "0", "1")
+co2Left = get_one_item(inputLines, "1", "0")
 
 oxygenStr = str(oxygenLeft)
 co2Str = str(co2Left)

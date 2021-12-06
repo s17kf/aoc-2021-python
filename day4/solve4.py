@@ -2,124 +2,101 @@
 
 import common
 
-isEmpty = common.isEmpty
-
 HELP_INFO = [
-"Script is solving task 1 for day 3 of advent of code 2021",
-"Arguments:",
-common.TAB + "input file"
+    "Script is solving task 1 for day 4 of advent of code 2021",
+    "Arguments:",
+    common.TAB + "input file"
 ]
+arguments_keywords = ["inputFile"]
 
-argumentsKeywords = ["inputFile"]
-
-scriptArguments = common.readScriptArguments(argumentsKeywords)
-
-if (isEmpty(scriptArguments)):
-    common.printArrayLineByLine(HELP_INFO)
+script_arguments = common.parse_arguments(arguments_keywords, HELP_INFO)
+if script_arguments is None:
     exit(1)
 
-inputFileName = scriptArguments["inputFile"]
-
+inputFileName = script_arguments["inputFile"]
 print("solving file: " + inputFileName)
-inputLines = common.readLinesFromFile(inputFileName)
+inputLines = common.read_lines_from_file(inputFileName)
 
-def getBoardItem(board, x, y):
+
+def get_board_item(board, x, y):
     # x = int(x/5)
     # y = x + y
     return board[5*x+y]
 
-boards = common.getListOfGroupsDividedEmptyLine(inputLines[2:])
 
-def verifyItemsAtRow(board, row, numbers):
+def verify_items_at_row(board, row, numbers):
     for i in range(5):
-        if not getBoardItem(board, row, i) in numbers:
+        if not get_board_item(board, row, i) in numbers:
             # print(f"{getBoardItem(board, row, i)} not in {numbers}")
             return False
     return True
 
-def verifyItemsAtColumn(board, column, numbers):
+
+def verify_items_at_column(board, column, numbers):
     for i in range(5):
-        if not getBoardItem(board, i, column) in numbers:
+        if not get_board_item(board, i, column) in numbers:
             return False
     return True
 
 
-def verifyBoard(board, numbers):
-    # if len(numbers) == 7:
-        # print(numbers)
-        # print(board)
+def verify_board(board, numbers):
     for i in range(5):
-        if verifyItemsAtRow(board, i, numbers) or verifyItemsAtColumn(board, i, numbers):
+        if verify_items_at_row(board, i, numbers) or verify_items_at_column(board, i, numbers):
             return True
     return False
 
-def getSumNumbersOnBoard(board, numbers):
-    sum = 0
+
+def get_sum_numbers_on_board(board, numbers):
+    count = 0
     for num in board:
         if not num in numbers:
             # print(f"{num} not in {board}")
-            sum += num
-    return sum
+            count += num
+    return count
 
 
-def doTask1(allNumbers, boards):
-    lastIndex = 0
-    currentNumbers = allNumbers[0:4]
-    for i in range(4, len(allNumbers)):
-        num = allNumbers[i]
-        currentNumbers.append(num)
-        # print(currentNumbers)
+def do_task1(all_numbers, boards):
+    current_numbers = all_numbers[0:4]
+    for i in range(4, len(all_numbers)):
+        num = all_numbers[i]
+        current_numbers.append(num)
         for board in boards:
-            if verifyBoard(board, currentNumbers):
-                # print(currentNumbers)
-                sumOfNums = getSumNumbersOnBoard(board, currentNumbers)
-                return sumOfNums, num
+            if verify_board(board, current_numbers):
+                sum_of_nums = get_sum_numbers_on_board(board, current_numbers)
+                return sum_of_nums, num
 
-def doTask2(allNumbers, boards):
-    lastIndex = 0
-    lastWinner = None
-    currentNumbers = allNumbers[0:4]
-    for i in range(4, len(allNumbers)):
-        num = allNumbers[i]
-        currentNumbers.append(num)
-        # print(currentNumbers)
+
+def do_task2(all_numbers, boards):
+    current_numbers = all_numbers[0:4]
+    for i in range(4, len(all_numbers)):
+        num = all_numbers[i]
+        current_numbers.append(num)
         for board in boards:
-            if verifyBoard(board, currentNumbers):
-                # print(currentNumbers)
-                lastWinner = board
+            if verify_board(board, current_numbers):
                 boards.remove(board)
-                if isEmpty(boards):
-                    sumOfNums = getSumNumbersOnBoard(board, currentNumbers)
-                    return sumOfNums, num
+                if common.is_empty(boards):
+                    sum_of_nums = get_sum_numbers_on_board(board, current_numbers)
+                    return sum_of_nums, num
 
 
+def main():
+    boards = common.get_list_of_groups_divided_empty_line(inputLines[2:])
+    all_numbers = inputLines[0]
+    all_numbers = all_numbers.split(",")
+    all_numbers = [int(n) for n in all_numbers]
+    int_boards = []
+    for board in boards:
+        board = board.split()
+        board = [int(n) for n in board]
+        int_boards.append(board)
 
-allNumbers = inputLines[0]
-allNumbers = allNumbers.split(",")
-allNumbers = [int(n) for n in allNumbers]
-intBoards = []
-for board in boards:
-    board = board.split()
-    board = [int(n) for n in board]
-    intBoards.append(board)
+    sum_of_nums, num = do_task1(all_numbers, int_boards)
+    result1 = sum_of_nums * num
+    sum_of_nums2, num2 = do_task2(all_numbers, int_boards)
+    result2 = sum_of_nums2 * num2
 
-sumOfNums, num = doTask1(allNumbers, intBoards)
-result1 = sumOfNums * num
-sumOfNums2, num2 = doTask2(allNumbers, intBoards)
-result2 = sumOfNums2 * num2
-
-# print(allNumbers)
-# for board in intBoards:
-#     print(getBoardItem(board, 0, 0), getBoardItem(board, 0, 3),getBoardItem(board, 0,4),
-#         getBoardItem(board,1,0),getBoardItem(board,1,2),getBoardItem(board,4,4))
-
+    print(f"task1: {sum_of_nums} * {num} = {result1}")
+    print(f"task2: {sum_of_nums2} * {num2} = {result2}")
 
 
-
-
-
-print(f"task1: {sumOfNums} * {num} = {result1}")
-print(f"task2: {sumOfNums2} * {num2} = {result2}")
-
-
-
+main()

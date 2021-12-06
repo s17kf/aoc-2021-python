@@ -2,49 +2,38 @@ import sys
 
 TAB = "    "
 
-def isEmpty(array):
+
+def is_empty(array):
     return len(array) == 0
 
-def getLastElement(array):
+
+def get_last_element(array):
     return array[len(array) - 1]
 
-def readLinesFromFile(filename):
-    with open(filename, 'r') as file:
-        lines = file.readlines()
-        lines = [line.rstrip() for line in lines]
-        file.close()
-    return lines
 
-def readScriptArguments(argumentKeywords):
-    argumentToValueMap = {}
-    if (len(sys.argv) != len(argumentKeywords) + 1):
-        return argumentToValueMap
-    for i in range(len(argumentKeywords)):
-        argumentToValueMap[argumentKeywords[i]] = sys.argv[i+1]
-    return argumentToValueMap
-
-def printArrayLineByLine(array):
+def print_array_line_by_line(array):
     for line in array:
         print(line)
 
-def getListOfGroupsDividedEmptyLine(lines, delimiter = " "):
+
+def get_list_of_groups_divided_empty_line(lines, delimiter=" "):
     groups = []
-    lastGroup = ""
+    last_group = ""
 
     for line in lines:
-        if isEmpty(line):
-            groups.append(lastGroup.lstrip())
-            lastGroup = ""
+        if is_empty(line):
+            groups.append(last_group.lstrip())
+            last_group = ""
             continue
-        lastGroup += delimiter + line
-    if lastGroup != "":
-        groups.append(lastGroup.lstrip())
+        last_group += delimiter + line
+    if last_group != "":
+        groups.append(last_group.lstrip())
     return groups
 
-def addOrIncreaseForKey(myDict, key, defaultValue = 1, valueToIncrease = 1):
-    if key in myDict:
-        myDict[key] += 1
-    else:
-        myDict[key] = defaultValue
-    return myDict
 
+def add_or_increase_for_key(my_dict, key, default_value=1, value_to_increase=1):
+    if key in my_dict:
+        my_dict[key] += value_to_increase
+    else:
+        my_dict[key] = default_value
+    return my_dict
