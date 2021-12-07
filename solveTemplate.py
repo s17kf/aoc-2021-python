@@ -1,6 +1,8 @@
 #!/usr/bin/python3.10
 
 import common
+from enum import Enum, auto
+from collections import Counter
 
 HELP_INFO = [
     "Script is solving task DAY_NUM of advent of code 2021",
@@ -13,9 +15,9 @@ script_arguments = common.parse_arguments(arguments_keywords, HELP_INFO)
 if script_arguments is None:
     exit(1)
 
-inputFileName = script_arguments["inputFile"]
-print("solving file: " + inputFileName)
-inputLines = common.read_lines_from_file(inputFileName)
+input_file_name = script_arguments["inputFile"]
+print("solving file: " + input_file_name)
+input_lines = common.read_lines_from_file(input_file_name)
 
 
 
