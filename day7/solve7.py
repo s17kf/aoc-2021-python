@@ -42,20 +42,23 @@ def do_task(positions):
     average = sum(positions) / len(positions)
     median = get_median(positions.copy())
     need_fuel = 0
-    for pos in positions:
-        need_fuel += abs(median - pos)
     need_fuel2 = 9999999999999
+    print(f"average: {average}")
     average = int(round(average))
     median = int(median)
     print(average)
     print(f"{median}, {average}")
+    need_fuel2 = 0
+    for pos in positions:
+        need_fuel += abs(median - pos)
+        need_fuel2 += get_cost2(pos,average)
 
-    for dest in range(max(positions) + 1):
-        need_fuel2_tmp = 0
-        for pos in positions:
-            need_fuel2_tmp += get_cost2(pos, dest)
-        if need_fuel2_tmp < need_fuel2:
-            need_fuel2 = need_fuel2_tmp
+    # for dest in range(max(positions) + 1):
+    #     need_fuel2_tmp = 0
+    #     for pos in positions:
+    #         need_fuel2_tmp += get_cost2(pos, dest)
+    #     if need_fuel2_tmp < need_fuel2:
+    #         need_fuel2 = need_fuel2_tmp
     return int(need_fuel), need_fuel2
 
 
