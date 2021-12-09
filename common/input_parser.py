@@ -25,4 +25,3 @@ def parse_arguments(arguments_keywords, error_info):
         common.print_array_line_by_line(error_info)
         return None
     return script_arguments
-
