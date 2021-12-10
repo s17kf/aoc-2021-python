@@ -1,8 +1,10 @@
-#!/usr/bin/python3.10
+#!/bin/bash
+"""exec" "pyenv" "exec" "python" "$0" "$@"""
 
 import common
 from enum import Enum, auto
 from collections import Counter
+import numpy
 
 HELP_INFO = [
     "Script is solving task DAY_NUM of advent of code 2021",
