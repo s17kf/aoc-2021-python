@@ -68,3 +68,7 @@ def add_or_increase_for_key(my_dict, key, default_value=1, value_to_increase=1):
     else:
         my_dict[key] = default_value
     return my_dict
+
+
+def print_dict_line_by_line(dictionary):
+    [print(f"{key}: {value}") for key, value in dictionary.items()]

@@ -5,6 +5,7 @@ import common
 from enum import Enum, auto
 from collections import Counter
 import numpy
+from common import numpy_matrix
 
 HELP_INFO = [
     "Script is solving task DAY_NUM of advent of code 2021",
