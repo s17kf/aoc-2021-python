@@ -14,4 +14,6 @@ cp ../solveTemplate.py "${solutionFile}"
 
 sed -i "s/DAY_NUM/${day}/g" "${solutionFile}"
 
+touch exampleData
+
 echo "Day ${day} initialized."
