@@ -43,6 +43,11 @@ def pop_zeros_at_beginning(bin_data):
         bin_data.pop(0)
 
 
+def pop_trailing_zeros(bin_data):
+    while len(bin_data) > 0 and bin_data[-1] == '0':
+        bin_data.pop()
+
+
 def pop_literal_packet(bin_data):
     data = ""
     first_bit_in_group = 1
@@ -51,7 +56,8 @@ def pop_literal_packet(bin_data):
         group = bin_data[:4]
         data += ''.join(group)
         remove_first_n_bits(bin_data, 4)
-    pop_zeros_at_beginning(bin_data)
+    # pop_zeros_at_beginning(bin_data)
+    print(f"literal: {data}")
     return data
 
 
@@ -65,6 +71,7 @@ def pop_subpackets(bin_data, versions, subpackets):
             bin_data.pop(0)
         subpackets.append(''.join(bin_data[:subpackets_length]))
         print(f"{subpackets_length} vs {len(subpackets[-1])} ... left {len(bin_data)}")
+        print(subpackets[-1])
         remove_first_n_bits(bin_data, subpackets_length)
         # pop_zeros_at_beginning(bin_data)
         return
@@ -72,9 +79,8 @@ def pop_subpackets(bin_data, versions, subpackets):
     length_of_subpackets_count = 11
     subpackets_count = int(''.join(bin_data[:length_of_subpackets_count]), 2)
     remove_first_n_bits(bin_data, length_of_subpackets_count)
-    # while bin_data[0] == '0':
-    #     bin_data.pop(0)
     # subpackets = []
+    # pop_zeros_at_beginning(bin_data)
     print(f"subpackets_count: {subpackets_count}")
     for _ in range(subpackets_count):
         version, type_id = pop_packet_version_and_type_id(bin_data)
@@ -84,7 +90,8 @@ def pop_subpackets(bin_data, versions, subpackets):
             pop_subpackets(bin_data, versions, subpackets)
         else:
             literal_packet = pop_literal_packet(bin_data)
-    pop_zeros_at_beginning(bin_data)
+            print(f"literal:{literal_packet}, data left: {bin_data}")
+    # pop_zeros_at_beginning(bin_data)
     return
 
 
@@ -94,8 +101,11 @@ def get_versions(data, is_hex=True):
         binary_data = ""
         for hex in data:
             binary_data += format(int(hex, 16), '04b')
-    # print(binary_data)
+    print(binary_data)
     binary_data = [bit for bit in binary_data]
+    if is_hex:
+        pop_trailing_zeros(binary_data)
+    print(binary_data)
     # print(pop_packet_version_and_type_id(binary_data))
     parsed = False
     versions = []
@@ -109,11 +119,13 @@ def get_versions(data, is_hex=True):
             pop_subpackets(binary_data, versions, subpackets)
         else:
             literal_packet = pop_literal_packet(binary_data)
+            # pop_zeros_at_beginning(binary_data)
+            print(literal_packet)
             # subpackets.append(literal_packet)
             # version, type_id = pop_packet_version_and_type_id(binary_data)
             # versions.append(version)
             # print(int(literal_packet, 2))
-            break
+            # break
 
     print(subpackets)
     for subpacket in subpackets:
@@ -121,11 +133,13 @@ def get_versions(data, is_hex=True):
         versions += (get_versions(subpacket, False))
 
     return versions
+    # print(versions)
+    # return sum([int(version) for version in versions])
     # return ''.join(binary_data)
 
 
 result1 = get_versions(input_lines[0])
 result2 = 1
 
-print(f"task1: {result1}")
+print(f"task1: {sum([int(version) for version in result1])} {result1}")
 print(f"task2: {result2}")
