@@ -77,26 +77,32 @@ def get_possible_v2_moves_sums():
 def move_v2(position, move_value):
     position = (position + move_value) % POSITIONS_ON_BOARD
     if position == 0:
-        position = 10
+        position = POSITIONS_ON_BOARD
     return position
 
 
-def task2_step(positions, positions_counts, scores, win_score, current_player, possible_moves):
+def task2_step(positions, universes, scores, win_score, current_player, possible_moves,
+               iteration=1):
+    result = [0, 0]
+    # result = [1, 1]
     if not all([score < win_score for score in scores]):
         current_player = (current_player + 1) % PLAYERS_COUNT
-        result = [0, 0]
-        result[current_player] = positions_counts[0] * positions_counts[1]
+        # result = [0, 0]
+        # result[current_player] = positions_counts[0] * positions_counts[1]
+        result[current_player] = universes
+        # print(iteration, universes)
         return result
-    result = [0, 0]
     for possible_move in possible_moves:
         possible_positions = positions.copy()
+        scores_copy = scores.copy()
         possible_positions[current_player] = move_v2(possible_positions[current_player],
                                                      possible_move)
-        positions_counts[current_player] *= possible_moves[possible_move]
-        scores[current_player] += positions[current_player]
-        current_player = (current_player + 1) % PLAYERS_COUNT
-        move_result = task2_step(possible_positions, positions_counts.copy(), scores.copy(),
-                                 win_score, current_player, possible_moves)
+        # universes += possible_moves[possible_move]
+        scores_copy[current_player] += possible_positions[current_player]
+        # current_player = (current_player + 1) % PLAYERS_COUNT
+        move_result = task2_step(possible_positions, universes * possible_moves[possible_move],
+                                 scores_copy, win_score, (current_player + 1) % PLAYERS_COUNT,
+                                 possible_moves, iteration + 1)
         for i in range(2):
             result[i] += move_result[i]
     return result
@@ -104,13 +110,16 @@ def task2_step(positions, positions_counts, scores, win_score, current_player, p
 
 def do_task2(positions, win_score):
     possible_moves = get_possible_v2_moves_sums()
+    print(possible_moves)
+    print(positions)
     scores = [0 for _ in positions]
     current_player = 0
     players_count = len(positions)
     positions_counts = [1, 1]
     scores = [0, 0]
-    return task2_step(positions, positions_counts, scores, win_score, current_player,
-                      possible_moves)
+    # scores = positions.copy()
+    universes = 1
+    return task2_step(positions, universes, scores, win_score, current_player, possible_moves)
 
 
 WIN_SCORE_1, WIN_SCORE_2 = 1000, 21
